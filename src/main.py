@@ -11,8 +11,6 @@ from os.path import join
 class AppWindow(Adw.ApplicationWindow):
     __gtype_name__ = "AppWindow"
 
-    # en_directory = Gtk.Template.Child()
-
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
