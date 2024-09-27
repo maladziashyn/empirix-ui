@@ -1,0 +1,469 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="Adw" version="1.0"/>
+  <template class="AppWindow" parent="AdwApplicationWindow">
+    <property name="width-request">900</property>
+    <property name="height-request">550</property>
+    <property name="default-width">1100</property>
+    <property name="default-height">900</property>
+    <property name="resizable">1</property>
+    <property name="title">Empirix UI</property>
+
+    <child>
+      <object class="AdwBreakpoint">
+        <condition>max-width: 400sp</condition>
+        <setter object="split_view" property="collapsed">True</setter>
+      </object>
+    </child>
+
+    <property name="content">
+
+      <object class="AdwToolbarView">
+        <property name="top-bar-style">raised</property>
+        <property name="reveal-bottom-bars">1</property>
+
+        <child type="top">
+          <object class="AdwHeaderBar" id="header_bar">
+
+            <child type="start">
+              <object class="GtkToggleButton" id="show_sidebar_button">
+                <property name="icon-name">sidebar-show-symbolic</property>
+                <property name="tooltip-text" translatable="yes">Toggle Sidebar</property>
+                <property name="active">True</property>
+              </object>
+            </child>
+
+            <child type="end">
+              <object class="GtkMenuButton">
+                <property name="primary">True</property>
+                <property name="icon-name">open-menu-symbolic</property>
+                <property name="tooltip-text" translatable="yes">Menu</property>
+                <property name="menu-model">primary_menu</property>
+              </object>
+            </child>
+
+          </object>
+        </child>
+
+
+        <property name="content">
+
+          <object class="AdwOverlaySplitView" id="split_view">
+            <property name="show-sidebar"
+                      bind-source="show_sidebar_button"
+                      bind-property="active"
+                      bind-flags="sync-create|bidirectional"/>
+            <property name="sidebar">
+              <object class="GtkStackSidebar">
+                <property name="stack">stack</property>
+              </object>
+            </property>
+
+            <property name="content">
+              <object class="GtkStack" id="stack">
+                <property name="transition-type">crossfade</property>
+                <child>
+                  <object class="GtkStackPage">
+                    <property name="name">page200</property>
+                    <property name="title" translatable="yes">Monte Carlo Simulation</property>
+                    <property name="child">
+                      <object class="GtkScrolledWindow">
+                        <child>
+                          <object class="AdwClamp">
+                            <property name="maximum_size">600</property>
+                            <child>
+                              <object class="GtkBox">
+                                <property name="orientation">vertical</property>
+                                <property name="spacing">30</property>
+                                <property name="margin_start">30</property>
+                                <property name="margin_top">30</property>
+                                <property name="margin_end">30</property>
+                                <property name="margin_bottom">30</property>
+                                <child>
+                                  <object class="AdwPreferencesGroup" id="mc_pref_group_report_layout">
+                                    <property name="title">Report Layout</property>
+                                    <property name="description">Configure report layout and settings</property>
+
+                                    <child>
+                                      <object class="AdwEntryRow" id="entry_monte_target_dir">
+                                        <property name="title">Target Directory</property>
+                                        <property name="show_apply_button">true</property>
+                                        <child type="suffix">
+                                          <object class="GtkButton">
+                                            <property name="icon_name">folder</property>
+                                            <property name="has_frame">false</property>
+                                          </object>
+                                        </child>
+                                      </object>
+                                    </child>
+
+                                    <child>
+                                      <object class="AdwSpinRow" id="spin_monte_curves_count">
+                                        <property name="title">Curves to Display</property>
+                                        <property name="subtitle">Number of random equity curves to display</property>
+                                        <property name="adjustment">
+                                          <object class="GtkAdjustment">
+                                            <property name="lower">1</property>
+                                            <property name="upper">100</property>
+                                            <property name="value">15</property>
+                                            <property name="step-increment">1</property>
+                                            <property name="page-increment">10</property>
+                                          </object>
+                                        </property>
+                                      </object>
+                                    </child>
+
+                                    <child>
+                                      <object class="AdwSpinRow" id="spin_monte_bins">
+                                        <property name="title">Bins</property>
+                                        <property name="subtitle">How many bars on the histogram</property>
+                                        <property name="adjustment">
+                                          <object class="GtkAdjustment">
+                                            <property name="lower">2</property>
+                                            <property name="upper">200</property>
+                                            <property name="value">20</property>
+                                            <property name="step-increment">1</property>
+                                            <property name="page-increment">10</property>
+                                          </object>
+                                        </property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+
+                                <child>
+                                  <object class="AdwPreferencesGroup" id="mc_pref_group_sim_ruin">
+                                    <property name="title">Global Simulation Settings</property>
+                                    <property name="description">Total simulations and risk level parameters</property>
+                                    <child>
+                                      <object class="AdwSpinRow" id="spin_monte_simulations_count">
+                                        <property name="title">Simulations</property>
+                                        <property name="subtitle">How many simulations to run</property>
+                                        <property name="adjustment">
+                                          <object class="GtkAdjustment">
+                                            <property name="lower">10</property>
+                                            <property name="upper">10000</property>
+                                            <property name="value">300</property>
+                                            <property name="step-increment">10</property>
+                                            <property name="page-increment">100</property>
+                                          </object>
+                                        </property>
+                                      </object>
+                                    </child>
+
+                                    <child>
+                                      <object class="AdwSpinRow" id="spin_monte_ruin_level">
+                                        <property name="title">Ruin Level, % of Capital</property>
+                                        <property name="subtitle">Percentage of capital lost before quitting</property>
+                                        <property name="digits">2</property>
+                                        <property name="adjustment">
+                                          <object class="GtkAdjustment">
+                                            <property name="lower">1.0</property>
+                                            <property name="upper">99.0</property>
+                                            <property name="step-increment">0.5</property>
+                                            <property name="value">30.0</property>
+                                          </object>
+                                        </property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+
+                                <child>
+                                  <object class="GtkSeparator">
+                                    <property name="orientation">horizontal</property>
+                                  </object>
+                                </child>
+
+                                <child>
+                                  <object class="AdwPreferencesGroup" id="mc_pref_group_sim_rand_num">
+                                    <property name="title">RANDNUM Simulation Parameters</property>
+                                    <property name="description">Parameters of Random Number Simulations</property>
+                                    <child>
+                                      <object class="AdwSpinRow" id="spin_monte_sim_trades">
+                                        <property name="title">Trades Count</property>
+                                        <property name="subtitle">How many trades in one simulation</property>
+                                        <property name="adjustment">
+                                          <object class="GtkAdjustment">
+                                            <property name="lower">20</property>
+                                            <property name="upper">20000</property>
+                                            <property name="value">1000</property>
+                                            <property name="step-increment">20</property>
+                                            <property name="page-increment">100</property>
+                                          </object>
+                                        </property>
+                                      </object>
+                                    </child>
+
+                                    <child>
+                                      <object class="AdwSpinRow" id="spin_monte_sim_years">
+                                        <property name="title">Years</property>
+                                        <property name="subtitle">Time window of a simulation in years</property>
+                                        <property name="digits">2</property>
+                                        <property name="adjustment">
+                                          <object class="GtkAdjustment">
+                                            <property name="lower">0.5</property>
+                                            <property name="upper">50.0</property>
+                                            <property name="step-increment">0.10</property>
+                                            <property name="value">5.0</property>
+                                          </object>
+                                        </property>
+                                      </object>
+                                    </child>
+
+                                    <child>
+                                      <object class="AdwSpinRow" id="spin_monte_sim_win_rate">
+                                        <property name="title">Win Rate, %</property>
+                                        <property name="subtitle">Percentage of winning trades</property>
+                                        <property name="digits">2</property>
+                                        <property name="adjustment">
+                                          <object class="GtkAdjustment">
+                                            <property name="lower">1.0</property>
+                                            <property name="upper">99.0</property>
+                                            <property name="step-increment">0.5</property>
+                                            <property name="value">36.0</property>
+                                          </object>
+                                        </property>
+                                      </object>
+                                    </child>
+
+                                    <child>
+                                      <object class="AdwSpinRow" id="spin_monte_sim_win_loss_ratio">
+                                        <property name="title">Win/Loss Ratio</property>
+                                        <property name="subtitle">Ratio of Average Winner to Average Losing Trade</property>
+                                        <property name="digits">4</property>
+                                        <property name="adjustment">
+                                          <object class="GtkAdjustment">
+                                            <property name="lower">0.01</property>
+                                            <property name="upper">300.0</property>
+                                            <property name="step-increment">0.01</property>
+                                            <property name="value">1.75</property>
+                                          </object>
+                                        </property>
+                                      </object>
+                                    </child>
+
+                                    <child>
+                                      <object class="AdwSpinRow" id="spin_monte_sim_fraction">
+                                        <property name="title">Fraction, %</property>
+                                        <property name="subtitle">Percentage of capital risked per trade</property>
+                                        <property name="digits">2</property>
+                                        <property name="adjustment">
+                                          <object class="GtkAdjustment">
+                                            <property name="lower">0.01</property>
+                                            <property name="upper">90.0</property>
+                                            <property name="step-increment">0.1</property>
+                                            <property name="value">0.8</property>
+                                          </object>
+                                        </property>
+                                      </object>
+                                    </child>
+
+                                  </object>
+                                </child>
+
+                                <child>
+                                  <object class="GtkButton" id="btn_monte_sim_rand_num">
+                                    <property name="label">Run RANDNUM Simulation</property>
+                                    <property name="halign">center</property>
+                                    <property name="width-request">270</property>
+                                    <property name="height-request">40</property>
+<!--                                    <property name="tooltip-text">Simulate</property>-->
+                                    <style>
+                                      <class name="suggested-action"/>
+                                    </style>
+                                  </object>
+                                </child>
+
+                                <child>
+                                  <object class="GtkSeparator">
+                                    <property name="orientation">horizontal</property>
+                                  </object>
+                                </child>
+
+                                <child>
+                                  <object class="AdwPreferencesGroup" id="mc_pref_group_randch_shuffle">
+                                    <property name="title">RANDCHOICE and SHUFFLE Simulation Parameters</property>
+                                    <property name="description">Parameters of Random Choice and Shuffle Simulations</property>
+
+                                    <child>
+                                      <object class="AdwEntryRow" id="entry_monte_mixer_path">
+                                        <property name="title">Mixer Path</property>
+                                        <property name="show_apply_button">true</property>
+                                        <child type="suffix">
+                                          <object class="GtkButton">
+                                            <property name="icon_name">folder</property>
+                                            <property name="has_frame">false</property>
+                                          </object>
+                                        </child>
+                                      </object>
+                                    </child>
+
+                                    <child>
+                                      <object class="AdwEntryRow" id="entry_monte_mixer_sheet_name">
+                                        <property name="title">Sheet Name</property>
+                                        <property name="show_apply_button">true</property>
+                                      </object>
+                                    </child>
+
+                                    <child>
+                                      <object class="AdwComboRow" id="combo_sim_type">
+                                        <property name="title">Simulation Type</property>
+                                        <property name="subtitle">Select from the list</property>
+                                        <property name="model">
+                                          <object class="GtkStringList">
+                                            <items>
+                                              <item>Random Choice</item>
+                                              <item>Shuffle</item>
+                                            </items>
+                                          </object>
+                                        </property>
+                                      </object>
+                                    </child>
+
+                                  </object>
+                                </child>
+
+                                <child>
+                                  <object class="GtkButton" id="btn_monte_sim_choice_shuffle">
+                                    <property name="label">Run Simulation</property>
+                                    <property name="halign">center</property>
+                                    <property name="width-request">270</property>
+                                    <property name="height-request">40</property>
+<!--                                    <property name="tooltip-text">Simulate</property>-->
+                                    <style>
+                                      <class name="suggested-action"/>
+                                    </style>
+                                  </object>
+                                </child>
+
+                                <child>
+                                  <object class="GtkSeparator">
+                                    <property name="orientation">horizontal</property>
+                                  </object>
+                                </child>
+
+                                <child>
+                                  <object class="AdwPreferencesGroup" id="mc_pref_group_search_f">
+                                    <property name="title">Optimal F Search</property>
+                                    <property name="description">Arrive at Optimal F</property>
+
+                                    <child>
+                                      <object class="AdwComboRow" id="combo_search_f_sim_type">
+                                        <property name="title">Simulation Type</property>
+                                        <property name="subtitle">Select from the list</property>
+                                        <property name="model">
+                                          <object class="GtkStringList">
+                                            <items>
+                                              <item>Random Number</item>
+                                              <item>Random Choice</item>
+                                              <item>Shuffle</item>
+                                            </items>
+                                          </object>
+                                        </property>
+                                      </object>
+                                    </child>
+
+                                    <child>
+                                      <object class="AdwSpinRow" id="spin_monte_search_f_min_fraction">
+                                        <property name="title">Fraction, lower (%)</property>
+                                        <property name="subtitle">Minimum percentage of capital risked per trade, percent</property>
+                                        <property name="digits">2</property>
+                                        <property name="adjustment">
+                                          <object class="GtkAdjustment">
+                                            <property name="lower">0.01</property>
+                                            <property name="upper">90.0</property>
+                                            <property name="step-increment">0.1</property>
+                                            <property name="value">0.01</property>
+                                          </object>
+                                        </property>
+                                      </object>
+                                    </child>
+
+                                    <child>
+                                      <object class="AdwSpinRow" id="spin_monte_search_f_max_fraction">
+                                        <property name="title">Fraction, upper (%)</property>
+                                        <property name="subtitle">Maximum percentage of capital risked per trade, percent</property>
+                                        <property name="digits">2</property>
+                                        <property name="adjustment">
+                                          <object class="GtkAdjustment">
+                                            <property name="lower">0.01</property>
+                                            <property name="upper">90.0</property>
+                                            <property name="step-increment">0.1</property>
+                                            <property name="value">50.0</property>
+                                          </object>
+                                        </property>
+                                      </object>
+                                    </child>
+
+                                    <child>
+                                      <object class="AdwSpinRow" id="spin_monte_search_f_step">
+                                        <property name="title">Fraction, step (% points)</property>
+                                        <property name="subtitle">Minimal step of fraction during search, percentage points</property>
+                                        <property name="digits">2</property>
+                                        <property name="adjustment">
+                                          <object class="GtkAdjustment">
+                                            <property name="lower">0.01</property>
+                                            <property name="upper">5.0</property>
+                                            <property name="step-increment">0.01</property>
+                                            <property name="value">0.01</property>
+                                          </object>
+                                        </property>
+                                      </object>
+                                    </child>
+
+                                  </object>
+                                </child>
+
+                                <child>
+                                  <object class="GtkButton" id="btn_monte_search_f">
+                                    <property name="label">Start Search</property>
+                                    <property name="halign">center</property>
+                                    <property name="width-request">270</property>
+                                    <property name="height-request">40</property>
+<!--                                    <property name="tooltip-text">Simulate</property>-->
+                                    <style>
+                                      <class name="suggested-action"/>
+                                    </style>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </property>
+                  </object>
+                </child>
+              </object>
+            </property>
+          </object>
+        </property>
+      </object>
+    </property>
+  </template>
+
+  <menu id="primary_menu">
+    <section>
+      <item>
+        <attribute name="label" translatable="yes">_Save as...</attribute>
+<!--        <attribute name="action">win.save-as</attribute>-->
+      </item>
+
+      <item>
+        <attribute name="label" translatable="yes">_Preferences</attribute>
+<!--        <attribute name="action">app.preferences</attribute>-->
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">_Keyboard Shortcuts</attribute>
+<!--        <attribute name="action">win.show-help-overlay</attribute>-->
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">_About Empirix UI</attribute>
+<!--        <attribute name="action">app.about</attribute>-->
+      </item>
+    </section>
+  </menu>
+
+</interface>
