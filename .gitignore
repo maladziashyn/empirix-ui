@@ -1,6 +1,6 @@
 # *.kate-swp
-
-jupyter/empirix-ui-jnb/
+jupyter/
+# jupyter/empirix-ui-jnb/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

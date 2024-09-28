@@ -11,8 +11,16 @@ from os.path import join
 class AppWindow(Adw.ApplicationWindow):
     __gtype_name__ = "AppWindow"
 
+    er_mc_target_dir = Gtk.Template.Child()  # entry row
+    btn_target_dir = Gtk.Template.Child()
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+
+    @Gtk.Template.Callback()
+    def btn_target_dir_callback(self, *args):
+        # self.en_directory.set_text(c.PROJ_SRC)
+        print(self.er_mc_target_dir.get_text())
 
 
 class MyApp(Adw.Application):
