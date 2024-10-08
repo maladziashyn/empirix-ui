@@ -4,10 +4,10 @@ gi.require_version("Adw", "1")
 from gi.repository import Adw, Gio, Gtk
 
 from os import getcwd
-from os.path import join
+from os.path import join, dirname
 
 
-@Gtk.Template(filename=join(getcwd(), "window.ui"))
+@Gtk.Template(filename=join(dirname(__file__), "window.ui"))
 class AppWindow(Adw.ApplicationWindow):
     __gtype_name__ = "AppWindow"
 
@@ -17,10 +17,19 @@ class AppWindow(Adw.ApplicationWindow):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-    @Gtk.Template.Callback()
-    def btn_target_dir_callback(self, *args):
+    @Gtk.Template.Callback("btn_callback_01")
+    def pick_target_dir(self, *args):
         # self.en_directory.set_text(c.PROJ_SRC)
-        print(self.er_mc_target_dir.get_text())
+        # print(self.er_mc_target_dir.get_text())
+        native = Gtk.FileDialog()
+        native.select_folder(self, None, self._on_select_folder_complete)
+
+    def _on_select_folder_complete(self, dialog, result):
+        folder = dialog.select_folder_finish(result)
+        if folder:
+            print(folder.get_path())
+            self.er_mc_target_dir.set_text(folder.get_path())
+
 
 
 class MyApp(Adw.Application):

@@ -92,7 +92,7 @@
                                           <object class="GtkButton" id="btn_target_dir">
                                             <property name="icon_name">folder</property>
                                             <property name="has_frame">false</property>
-                                            <signal name="clicked" handler="btn_target_dir_callback"/>
+                                            <signal name="clicked" handler="btn_callback_01"/>
                                           </object>
                                         </child>
                                       </object>
