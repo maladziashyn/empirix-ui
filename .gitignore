@@ -1,3 +1,5 @@
+*.db
+
 # *.kate-swp
 jupyter/
 # jupyter/empirix-ui-jnb/

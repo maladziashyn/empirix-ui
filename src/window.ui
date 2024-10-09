@@ -85,7 +85,7 @@
                                     <property name="description">Configure report layout and settings</property>
 
                                     <child>
-                                      <object class="AdwEntryRow" id="er_mc_target_dir">
+                                      <object class="AdwEntryRow" id="entry_mc_target_dir">
                                         <property name="title">Target Directory</property>
                                         <property name="show_apply_button">true</property>
                                         <child type="suffix">
